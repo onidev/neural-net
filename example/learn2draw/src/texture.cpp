@@ -5,7 +5,7 @@
 
 Texture::Texture(const std::string& fname)
 {
-    surf.reset( IMG_Load("simple_earth.png") );
+    surf.reset( IMG_Load(fname.c_str()) );
     if(surf == nullptr)
         throw std::runtime_error("Unable to load texture " + fname);
     
