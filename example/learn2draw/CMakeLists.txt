@@ -4,7 +4,7 @@ project(project1)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -Wno-unused-parameter")
 
-file(GLOB_RECURSE SOURCE_FILES *.hpp *.h *.inl *.cpp *.c)
+file(GLOB_RECURSE SOURCE_FILES src/*.hpp src/*.h src/*.inl src/*.cpp src/*.c)
 
 add_executable(project1 ${SOURCE_FILES})
 
