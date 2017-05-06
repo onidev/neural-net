@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 
 project(project1)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -Wno-unused-parameter")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O3 -Wall -Wextra -Wno-unused-parameter")
 
 file(GLOB_RECURSE SOURCE_FILES src/*.hpp src/*.h src/*.inl src/*.cpp src/*.c)
 
