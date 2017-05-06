@@ -12,8 +12,8 @@
 
 int main(int argc, char **argv)
 {	
-    Window window(640, 480, "Hi");
-    Texture tex("simple_earth.png");
+    Window window(640, 480, "Perceptron - Learn to draw");
+    Texture tex("data/simple_earth.png");
     Texture out(tex.wid, tex.hei);
     
     Perceptron<float> perceptron(2, 10, 10, 3);
