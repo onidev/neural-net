@@ -36,11 +36,11 @@ set(FOUND_LIBS
         ${SDLIMAGE_LIBRARY}
 )
 
-#message(WARNING ${SDLIMAGE_FOUND})
-
 #if(WIN32)
 #    set(FOUND_LIBS ${FOUND_LIBS} ws2_32 wsock32 winmm gdi32 user32 kernel32 sdl2)
 #endif()
+
+include_directories(../../src)
 
 include_directories(AFTER ${FOUND_INCLUDES})
 target_link_libraries(project1 ${FOUND_LIBS})
