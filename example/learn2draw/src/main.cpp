@@ -13,14 +13,19 @@
 int main(int argc, char **argv)
 {	
     Window window(640, 480, "Perceptron - Learn to draw");
-    Texture tex("data/simple_earth.png");
-    Texture out(tex.wid, tex.hei);
+    
+    Texture tex_input("data/simple_earth.png");
+    
+    float output_scale = 1.0f;
+    Texture tex_output(tex_input.wid * output_scale, tex_input.hei * output_scale);
     
     Perceptron<float> perceptron(2, 10, 10, 3);
-    
-    srand(time(0));
-    perceptron.randomize();
-    perceptron.gain = 0.5f;
+    if(!perceptron.load("data.txt"))
+    {
+        srand(time(0));
+        perceptron.randomize();
+        perceptron.gain = 0.5f;
+    }
     
     unsigned iteration = 0;
     auto iterate = [&]()
@@ -34,9 +39,9 @@ int main(int argc, char **argv)
             float rate = 0.01f / (1.f + iteration / 2000.f);
             perceptron.activate( {x/128.f, y/128.f} ); // activate == eval
             
-            float r = tex(x, y).r / 255.f;
-            float g = tex(x, y).g / 255.f;
-            float b = tex(x, y).b / 255.f;
+            float r = tex_input(x, y).r / 255.f;
+            float g = tex_input(x, y).g / 255.f;
+            float b = tex_input(x, y).b / 255.f;
             
             //perceptron.learn({r, g, b}, 1.f - rate); // back propagation
             
@@ -80,21 +85,23 @@ int main(int argc, char **argv)
         
         iterate();
         
-        for(unsigned y=0; y<tex.hei; ++y)
-        for(unsigned x=0; x<tex.wid; ++x)
+        for(unsigned y=0; y<tex_output.hei; ++y)
+        for(unsigned x=0; x<tex_output.wid; ++x)
         {
-            perceptron.activate( {x/128.f, y/128.f} );
+            perceptron.activate( {x/(float)tex_output.wid, y/(float)tex_output.hei} );
             auto output = perceptron.output();
             Color c( int(output[0]*255), int(output[1]*255), int(output[2]*255), 255);
-            out.setPixel(x, y, c);
+            tex_output.setPixel(x, y, c);
         }
-        out.updatePixels();
+        tex_output.updatePixels();
         
-        tex.draw(16, 16);
-        out.draw(32 + tex.wid, 16);
+        tex_input.draw(16, 16);
+        tex_output.draw(32 + tex_input.wid, 16);
         
         window.swap();
     }
+    
+    perceptron.save("data.txt");
 	
     return 0;
 }

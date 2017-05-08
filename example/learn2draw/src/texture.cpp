@@ -7,7 +7,7 @@ Texture::Texture(const std::string& fname)
 {
     surf.reset( IMG_Load(fname.c_str()) );
     if(surf == nullptr)
-        throw std::runtime_error("Unable to load texture " + fname);
+        throw std::runtime_error("Unable to load texture " + fname + ": " + std::string{IMG_GetError()});
     
     wid = surf->w;
     hei = surf->h;
