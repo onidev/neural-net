@@ -2,6 +2,7 @@
 #define ONIDEV_PERCEPTRON_H_INCLUDED
 
 #include <vector>
+#include <fstream>
 
 // @todo optimize: https://github.com/cazala/synaptic/wiki/Networks#optimize
 // @todo permettre d'utiliser d'autres fonctions d'activation (mais aussi une differente par layer voir par neuron)
@@ -44,6 +45,9 @@ struct Perceptron
     void backPropagateError();
     void adjustWeights(T alpha = 0.9, T eta = 0.2);
     void adjustWeights(const std::vector<T>& alpha, const std::vector<T>& eta);
+    
+    void save(const std::string& fname) const;
+    bool load(const std::string& fname);
 };
 
 #include "perceptron.inl"

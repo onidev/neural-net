@@ -202,3 +202,67 @@ void Perceptron<T>::adjustWeights(const std::vector<T>& alphas, const std::vecto
     }
 }
 
+template<class T>
+void Perceptron<T>::save(const std::string& fname) const
+{
+    std::ofstream f(fname, std::ios::binary);
+    char sep = '\n';
+    
+    f << gain << sep
+      << static_cast<uint32_t>(layers.size()) << sep;
+    for(const std::vector<Neuron<T>>& layer: layers)
+    {
+        f << static_cast<uint32_t>(layer.size()) << sep;
+        for(const Neuron<T>& neuron: layer)
+        {
+            f << neuron.value << sep
+              << neuron.error << sep
+              << neuron.derivative << sep
+              << static_cast<uint32_t>(neuron.weight.size()) << sep;
+            
+            for(const T& w: neuron.weight)
+                f << w << sep;
+            
+            for(const T& w: neuron.last_weight)
+                f << w << sep;
+        }
+    }
+}
+
+template<class T>
+bool Perceptron<T>::load(const std::string& fname)
+{
+    std::ifstream f(fname, std::ios::binary);
+    
+    if(!f.is_open())
+        return false;
+    
+    uint32_t size;
+    f >> gain
+      >> size;
+    layers.resize(size);
+    
+    for(std::vector<Neuron<T>>& layer: layers)
+    {
+        f >> size;
+        layer.resize(size);
+        
+        for(Neuron<T>& neuron: layer)
+        {
+            f >> neuron.value
+              >> neuron.error
+              >> neuron.derivative
+              >> size;
+            
+            neuron.weight.resize(size);
+            for(T& w: neuron.weight)
+                f >> w;
+            
+            neuron.last_weight.resize(size);
+            for(T& w: neuron.last_weight)
+                f >> w;
+        }
+    }
+    
+    return true;
+}
