@@ -32,12 +32,12 @@ int main(int argc, char **argv)
     {
         double global_mse = 0.0;
         double global_mae = 0.0;
-        for(int i=0; i<128*128; ++i)
+        for(int i=0; i<tex_input.wid*tex_input.hei; ++i)
         {
-            int x = rand() % 128;
-            int y = rand() % 128;
+            int x = rand() % tex_input.wid;
+            int y = rand() % tex_input.hei;
             float rate = 0.01f / (1.f + iteration / 2000.f);
-            perceptron.activate( {x/128.f, y/128.f} ); // activate == eval
+            perceptron.activate( {x/(float)tex_input.wid, y/(float)tex_input.hei} ); // activate == eval
             
             float r = tex_input(x, y).r / 255.f;
             float g = tex_input(x, y).g / 255.f;
@@ -54,8 +54,8 @@ int main(int argc, char **argv)
             perceptron.adjustWeights(1.f - rate);
         }
         
-        global_mse /= 128*128;
-        global_mae /= 128*128;
+        global_mse /= tex_input.wid*tex_input.hei;
+        global_mae /= tex_input.wid*tex_input.hei;
         std::cout << global_mse << ' ' << global_mae << std::endl;
         
         ++iteration;
